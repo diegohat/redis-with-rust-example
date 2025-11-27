@@ -1,0 +1,21 @@
+# Pre-commit: verificações rápidas a cada commit
+pre-commit:
+  parallel: true
+  jobs:
+    - name: format
+      run: cargo fmt -- --check
+
+    - name: lint
+      run: cargo clippy --workspace -- -D warnings
+
+# Pre-push: verificações completas antes do push
+pre-push:
+  parallel: true
+  jobs:
+    - name: audit
+      tags:
+        - security
+      run: cargo audit
+
+    - name: test
+      run: cargo test --workspace
